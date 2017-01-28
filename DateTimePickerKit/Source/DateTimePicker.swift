@@ -14,6 +14,13 @@ import UIKit
     let contentHeight: CGFloat = 310
     
     // public vars
+    
+    public var font: ((CGFloat) -> UIFont) = { UIFont.systemFont(ofSize: $0) } {
+        didSet {
+            configureView()
+        }
+    }
+    
     public var backgroundViewColor: UIColor = .clear {
         didSet {
             backgroundColor = backgroundViewColor
@@ -133,7 +140,7 @@ import UIKit
         contentView.addSubview(titleView)
         
         dateTitleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
-        dateTitleLabel.font = UIFont.systemFont(ofSize: 15)
+        dateTitleLabel.font = font(15)
         dateTitleLabel.textColor = darkColor
         dateTitleLabel.textAlignment = .center
         resetDateTitle()
@@ -143,7 +150,7 @@ import UIKit
         todayButton.setTitle(todayButtonTitle, for: .normal)
         todayButton.setTitleColor(highlightColor, for: .normal)
         todayButton.addTarget(self, action: #selector(DateTimePicker.setToday), for: .touchUpInside)
-        todayButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        todayButton.titleLabel?.font = font(15)
         todayButton.isHidden = self.minimumDate.compare(Date()) == .orderedDescending || self.maximumDate.compare(Date()) == .orderedAscending
         let size = todayButton.sizeThatFits(CGSize(width: 0, height: 44.0)).width + 10.0
         todayButton.frame = CGRect(x: contentView.frame.width - size, y: 0, width: size, height: 44)
@@ -182,7 +189,7 @@ import UIKit
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.setTitleColor(.white, for: .normal)
         doneButton.backgroundColor = darkColor.withAlphaComponent(0.5)
-        doneButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 13)
+        doneButton.titleLabel?.font = font(13)
         doneButton.layer.cornerRadius = 3
         doneButton.layer.masksToBounds = true
         doneButton.addTarget(self, action: #selector(DateTimePicker.dismissView), for: .touchUpInside)
@@ -219,7 +226,7 @@ import UIKit
         colonLabel.center = CGPoint(x: contentView.frame.width / 2,
                                     y: (doneButton.frame.origin.y - borderBottomView.frame.origin.y - 10) / 2 + borderBottomView.frame.origin.y)
         colonLabel.text = ":"
-        colonLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        colonLabel.font = font(18)
         colonLabel.textColor = highlightColor
         colonLabel.textAlignment = .center
         contentView.addSubview(colonLabel)
@@ -367,7 +374,7 @@ extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
         
         cell.selectedBackgroundView = UIView()
         cell.textLabel?.textAlignment = tableView == hourTableView ? .right : .left
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        cell.textLabel?.font = font(18)
         cell.textLabel?.textColor = darkColor.withAlphaComponent(0.4)
         cell.textLabel?.highlightedTextColor = highlightColor
         // add module operation to set value same

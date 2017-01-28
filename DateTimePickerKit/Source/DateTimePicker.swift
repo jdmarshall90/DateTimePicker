@@ -8,8 +8,7 @@
 
 import UIKit
 
-
-@objc public class DateTimePicker: UIView {
+@objc open class DateTimePicker: UIView {
     
     let contentHeight: CGFloat = 310
     
@@ -39,7 +38,7 @@ import UIKit
     public var daysBackgroundColor = UIColor(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, alpha: 1)
     
     var didLayoutAtOnce = false
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         // For the first time view will be layouted manually before show
         // For next times we need relayout it because of screen rotation etc.

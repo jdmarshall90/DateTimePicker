@@ -95,31 +95,27 @@ import UIKit
     
     public init(selected: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil) {
         super.init(frame: .zero)
-        self.selectedDate = selected ?? Date()
+        selectedDate = selected ?? Date()
         self.minimumDate = minimumDate ?? Date(timeIntervalSinceNow: -3600 * 24 * 365 * 20)
         self.maximumDate = maximumDate ?? Date(timeIntervalSinceNow: 3600 * 24 * 365 * 20)
         assert(self.minimumDate.compare(self.maximumDate) == .orderedAscending, "Minimum date should be earlier than maximum date")
         assert(self.minimumDate.compare(self.selectedDate) != .orderedDescending, "Selected date should be later or equal to minimum date")
         assert(self.selectedDate.compare(self.maximumDate) != .orderedDescending, "Selected date should be earlier or equal to maximum date")
-        
-        self.configureView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc open class func show(selected: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil) -> DateTimePicker {
-        let dateTimePicker = DateTimePicker(selected: selected, minimumDate: minimumDate, maximumDate: maximumDate)
-        dateTimePicker.addToWindow()
-        return dateTimePicker
-    }
-    
     public func addToWindow() {
         UIApplication.shared.keyWindow?.addSubview(self)
     }
     
-    private func configureView() {
+    open override func didMoveToSuperview() {
+        self.configureView()
+    }
+    
+    open func configureView() {
         if self.contentView != nil {
             self.contentView.removeFromSuperview()
         }

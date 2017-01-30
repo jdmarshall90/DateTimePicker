@@ -26,7 +26,7 @@ import UIKit
         }
     }
     
-    public var highlightColor = UIColor(red: 0/255.0, green: 199.0/255.0, blue: 194.0/255.0, alpha: 1) {
+    open var highlightColor = UIColor(red: 0/255.0, green: 199.0/255.0, blue: 194.0/255.0, alpha: 1) {
         didSet {
             todayButton.setTitleColor(highlightColor, for: .normal)
             colonLabel.textColor = highlightColor

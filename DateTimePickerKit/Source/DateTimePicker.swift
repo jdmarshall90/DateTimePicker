@@ -14,6 +14,12 @@ import UIKit
     
     // public vars
     
+    public var doneButtonAlpha: CGFloat = 0.5 {
+        didSet {
+            configureView()
+        }
+    }
+    
     public var font: ((CGFloat) -> UIFont) = { UIFont.systemFont(ofSize: $0) } {
         didSet {
             configureView()
@@ -193,7 +199,7 @@ import UIKit
         doneButton.frame = CGRect(x: 10, y: contentView.frame.height - 10 - 44, width: contentView.frame.width - 20, height: 44)
         doneButton.setTitle(doneButtonTitle, for: .normal)
         doneButton.setTitleColor(.white, for: .normal)
-        doneButton.backgroundColor = darkColor.withAlphaComponent(0.5)
+        doneButton.backgroundColor = darkColor.withAlphaComponent(doneButtonAlpha)
         doneButton.titleLabel?.font = font(13)
         doneButton.layer.cornerRadius = 3
         doneButton.layer.masksToBounds = true

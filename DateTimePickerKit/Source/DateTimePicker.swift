@@ -8,6 +8,8 @@
 
 import UIKit
 
+// FIXME: This framework's code is a mess, especially this file. My customizations to it are a mess as well (I was in a hurry and just following the pre-existing style). If I end up supporting this control in my app long-term, then this entire lib will need an overhaul so it's easier to maintain.
+
 @objc open class DateTimePicker: UIView {
     
     let contentHeight: CGFloat = 310

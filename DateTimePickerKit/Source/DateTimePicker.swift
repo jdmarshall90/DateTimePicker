@@ -14,7 +14,14 @@ import UIKit
     
     let contentHeight: CGFloat = 310
     
+    public enum TimeMode: Int {
+        case twelveHour = 12
+        case twentyFourHour = 24
+    }
+    
     // public vars
+    
+    public var timeMode: TimeMode = .twentyFourHour
     
     public var doneButtonAlpha: CGFloat = 0.5 {
         didSet {

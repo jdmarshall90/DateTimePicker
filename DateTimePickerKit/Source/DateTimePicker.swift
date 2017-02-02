@@ -94,6 +94,8 @@ import UIKit
     internal var hourTableView: UITableView!
     internal var minuteTableView: UITableView!
     internal var dayCollectionView: UICollectionView!
+    internal var amPMSegmentedControl: UISegmentedControl!
+    
     internal enum AMOrPM: Int {
         case am
         case pm
@@ -295,6 +297,26 @@ import UIKit
         }
         components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: selectedDate)
         contentView.isHidden = false
+        
+        
+        // am / pm selector
+        if timeMode == .twelveHour {
+            let rightMostXOfSeparator = separatorTopView.frame.origin.x + separatorTopView.frame.size.width
+            let remainingWidthOnRightOfSeparators: CGFloat = frame.size.width - rightMostXOfSeparator
+            
+            let segmentedControlHeight = separatorBottomView.frame.origin.y - separatorTopView.frame.origin.y
+            let segmentedControlX = rightMostXOfSeparator + (remainingWidthOnRightOfSeparators / 4)
+            amPMSegmentedControl = UISegmentedControl(frame: CGRect(x: segmentedControlX,
+                                                                    y: separatorTopView.frame.origin.y,
+                                                                    width: remainingWidthOnRightOfSeparators / 2,
+                                                                    height: segmentedControlHeight))
+            amPMSegmentedControl.insertSegment(withTitle: "am", at: 0, animated: false)
+            amPMSegmentedControl.insertSegment(withTitle: "pm", at: 1, animated: false)
+            amPMSegmentedControl.selectedSegmentIndex = amOrPM.rawValue
+            amPMSegmentedControl.tintColor = darkColor
+            amPMSegmentedControl.addTarget(self, action: #selector(amPMSegmentedControlTapped), for: .valueChanged)
+            contentView.addSubview(amPMSegmentedControl)
+        }
         
         resetTime()
         

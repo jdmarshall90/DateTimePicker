@@ -299,11 +299,11 @@ import UIKit
         components = calendar.dateComponents([.day, .month, .year, .hour, .minute], from: selectedDate)
         updateCollectionView(to: selectedDate)
         if let hour = components.hour {
-            hourTableView.selectRow(at: IndexPath(row: hour + 24, section: 0), animated: true, scrollPosition: .middle)
+            hourTableView.selectRow(at: IndexPath(row: hour + timeMode.rawValue, section: 0), animated: true, scrollPosition: .middle)
         }
         
         if let minute = components.minute {
-            let expectedRow = minute == 0 ? 120 : minute + 60 // workaround for issue when minute = 0
+            let expectedRow = minute == 0 ? 120 : minute + minutesInHour // workaround for issue when minute = 0
             minuteTableView.selectRow(at: IndexPath(row: expectedRow, section: 0), animated: true, scrollPosition: .middle)
         }
     }
@@ -384,7 +384,7 @@ extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == hourTableView {
             // need triple of origin storage to scroll infinitely
-            return 24 * 3
+            return timeMode.rawValue * 3
         }
         // need triple of origin storage to scroll infinitely
         return 60 * 3

@@ -123,7 +123,7 @@ import UIKit
         self.configureView()
     }
     
-    open func configureView() {
+    private func configureView() {
         if self.contentView != nil {
             self.contentView.removeFromSuperview()
         }

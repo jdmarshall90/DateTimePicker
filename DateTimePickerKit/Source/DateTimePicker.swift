@@ -329,6 +329,24 @@ import UIKit
         dateTitleLabel.center = CGPoint(x: contentView.frame.width / 2, y: 22)
     }
     
+    
+    internal func updateSelectedDate(for tableView: UITableView, at row: Int) {
+        // add 24 or 12 to hour and 60 to minute, because datasource now has buffer at top and bottom.
+        if tableView == hourTableView {
+            var newHour = (row - timeMode.rawValue) % timeMode.rawValue
+            if amOrPM == .pm {
+                newHour += 12
+            }
+            components.hour = newHour
+        } else if tableView == minuteTableView {
+            components.minute = (row - 60) % 60
+        }
+        
+        if let selected = calendar.date(from: components) {
+            selectedDate = selected
+        }
+    }
+    
     func fillDates(fromDate: Date, toDate: Date) {
         
         var dates: [Date] = []
@@ -416,15 +434,7 @@ extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
-        if tableView == hourTableView {
-            components.hour = (indexPath.row - 24)%24
-        } else if tableView == minuteTableView {
-            components.minute = (indexPath.row - 60)%60
-        }
-        
-        if let selected = calendar.date(from: components) {
-            selectedDate = selected
-        }
+        updateSelectedDate(for: tableView, at: indexPath.row)
     }
     
     // for infinite scrolling, use modulo operation.
@@ -517,16 +527,7 @@ extension DateTimePicker: UICollectionViewDataSource, UICollectionViewDelegate {
             let row = round(relativeOffset.y / tableView.rowHeight)
             tableView.selectRow(at: IndexPath(row: Int(row), section: 0), animated: true, scrollPosition: .middle)
             
-            // add 24 to hour and 60 to minute, because datasource now has buffer at top and bottom.
-            if tableView == hourTableView {
-                components.hour = Int(row - 24)%24
-            } else if tableView == minuteTableView {
-                components.minute = Int(row - 60)%60
-            }
-            
-            if let selected = calendar.date(from: components) {
-                selectedDate = selected
-            }
+            updateSelectedDate(for: tableView, at: Int(row))
         }
     }
 }

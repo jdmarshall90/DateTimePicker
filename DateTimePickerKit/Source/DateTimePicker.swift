@@ -104,6 +104,7 @@ import UIKit
     private var minimumDate: Date!
     private var maximumDate: Date!
     
+    internal let minutesInHour = 60
     internal var calendar: Calendar = .current
     internal var dates: [Date]! = []
     internal var components: DateComponents!

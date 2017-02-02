@@ -433,8 +433,13 @@ extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.font = font(18)
         cell.textLabel?.textColor = darkColor.withAlphaComponent(0.4)
         cell.textLabel?.highlightedTextColor = highlightColor
+        
         // add module operation to set value same
-        cell.textLabel?.text = String(format: "%02i", indexPath.row % (tableView == hourTableView ? 24 : 60))
+        var hourOrMinute = indexPath.row % (tableView == hourTableView ? timeMode.rawValue : minutesInHour)
+        if timeMode == .twelveHour && hourOrMinute == 0 {
+            hourOrMinute = timeMode.rawValue
+        }
+        cell.textLabel?.text = String(format: "%02i", hourOrMinute)
         
         return cell
     }

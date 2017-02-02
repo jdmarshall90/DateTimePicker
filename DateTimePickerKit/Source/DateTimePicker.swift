@@ -473,7 +473,7 @@ extension DateTimePicker: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func alignScrollView(_ scrollView: UIScrollView) {
         if let collectionView = scrollView as? UICollectionView {
-            let centerPoint = CGPoint(x: collectionView.center.x + collectionView.contentOffset.x, y: 50);
+            let centerPoint = CGPoint(x: collectionView.center.x + collectionView.contentOffset.x, y: 50)
             if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
                 // automatically select this item and center it to the screen
                 // set animated = false to avoid unwanted effects

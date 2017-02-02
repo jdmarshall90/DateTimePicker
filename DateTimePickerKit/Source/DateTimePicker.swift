@@ -226,34 +226,41 @@ import UIKit
         doneButton.addTarget(self, action: #selector(DateTimePicker.dismissView), for: .touchUpInside)
         contentView.addSubview(doneButton)
         
+        let tableViewY = borderBottomView.frame.origin.y + 2
+        let tableViewWidth: CGFloat = 60
+        let tableViewHeight = doneButton.frame.origin.y - borderBottomView.frame.origin.y - 10
+        let tableViewRowHeight: CGFloat = 36
+        let tableViewSeparatorStyle = UITableViewCellSeparatorStyle.none
+        let tableViewContentInset = UIEdgeInsetsMake(tableViewRowHeight / 2, 0, tableViewRowHeight / 2, 0)
+        
         // hour table view
-        hourTableView = UITableView(frame: CGRect(x: contentView.frame.width / 2 - 60,
-                                                  y: borderBottomView.frame.origin.y + 2,
-                                                  width: 60,
-                                                  height: doneButton.frame.origin.y - borderBottomView.frame.origin.y - 10))
-        hourTableView.rowHeight = 36
-        hourTableView.contentInset = UIEdgeInsetsMake(hourTableView.frame.height / 2, 0, hourTableView.frame.height / 2, 0)
+        hourTableView = UITableView(frame: CGRect(x: contentView.frame.width / 2 - tableViewWidth,
+                                                  y: tableViewY,
+                                                  width: tableViewWidth,
+                                                  height: tableViewHeight))
+        hourTableView.rowHeight = tableViewRowHeight
+        hourTableView.contentInset = tableViewContentInset
         hourTableView.showsVerticalScrollIndicator = false
-        hourTableView.separatorStyle = .none
+        hourTableView.separatorStyle = tableViewSeparatorStyle
         hourTableView.delegate = self
         hourTableView.dataSource = self
         contentView.addSubview(hourTableView)
         
         // minute table view
         minuteTableView = UITableView(frame: CGRect(x: contentView.frame.width / 2,
-                                                    y: borderBottomView.frame.origin.y + 2,
-                                                    width: 60,
-                                                    height: doneButton.frame.origin.y - borderBottomView.frame.origin.y - 10))
-        minuteTableView.rowHeight = 36
-        minuteTableView.contentInset = UIEdgeInsetsMake(minuteTableView.frame.height / 2, 0, minuteTableView.frame.height / 2, 0)
+                                                    y: tableViewY,
+                                                    width: tableViewWidth,
+                                                    height: tableViewHeight))
+        minuteTableView.rowHeight = tableViewRowHeight
+        minuteTableView.contentInset = tableViewContentInset
         minuteTableView.showsVerticalScrollIndicator = false
-        minuteTableView.separatorStyle = .none
+        minuteTableView.separatorStyle = tableViewSeparatorStyle
         minuteTableView.delegate = self
         minuteTableView.dataSource = self
         contentView.addSubview(minuteTableView)
         
         // colon
-        colonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 36))
+        colonLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: tableViewRowHeight))
         colonLabel.center = CGPoint(x: contentView.frame.width / 2,
                                     y: (doneButton.frame.origin.y - borderBottomView.frame.origin.y - 10) / 2 + borderBottomView.frame.origin.y)
         colonLabel.text = ":"

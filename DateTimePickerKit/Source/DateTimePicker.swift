@@ -345,6 +345,10 @@ import UIKit
             let expectedRow = minute == 0 ? 120 : minute + minutesInHour // workaround for issue when minute = 0
             minuteTableView.selectRow(at: IndexPath(row: expectedRow, section: 0), animated: true, scrollPosition: .middle)
         }
+        
+        if timeMode == .twelveHour {
+            amPMSegmentedControl.selectedSegmentIndex = amOrPM.rawValue
+        }
     }
     
     private func resetDateTitle() {

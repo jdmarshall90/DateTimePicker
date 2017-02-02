@@ -94,6 +94,16 @@ import UIKit
     internal var hourTableView: UITableView!
     internal var minuteTableView: UITableView!
     internal var dayCollectionView: UICollectionView!
+    internal enum AMOrPM: Int {
+        case am
+        case pm
+    }
+    
+    internal var amOrPM: AMOrPM {
+        let hour = Calendar.current.dateComponents([.hour], from: self.selectedDate).hour ?? 0
+        let amPM: AMOrPM = (hour >= 0 && hour <= 11) ? .am : .pm
+        return amPM
+    }
     
     private var contentView: UIView!
     private var dateTitleLabel: UILabel!

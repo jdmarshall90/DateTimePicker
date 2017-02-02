@@ -362,6 +362,25 @@ import UIKit
         dateTitleLabel.center = CGPoint(x: contentView.frame.width / 2, y: 22)
     }
     
+    internal func amPMSegmentedControlTapped(_ sender: UISegmentedControl) {
+        guard let selectedAMOrPM = AMOrPM(rawValue: sender.selectedSegmentIndex) else {
+            assertionFailure("Invalid selected segment index. This should not happen")
+            return
+        }
+        
+        guard let currentHour = components.hour else { return }
+        
+        let hourDiff = 12
+        if selectedAMOrPM == .am {
+            components.hour = currentHour - hourDiff
+        } else {
+            components.hour = currentHour + hourDiff
+        }
+        
+        if let selected = calendar.date(from: components) {
+            selectedDate = selected
+        }
+    }
     
     internal func updateSelectedDate(for tableView: UITableView, at row: Int) {
         // add 24 or 12 to hour and 60 to minute, because datasource now has buffer at top and bottom.

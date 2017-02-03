@@ -519,6 +519,9 @@ extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
             let heightValueLoss = visibleHeight - CGFloat(Int(visibleHeight))
             let modifiedPotisionY = CGFloat(Int( scrollView.contentOffset.y ) % Int( visibleHeight ) + Int( visibleHeight )) - positionValueLoss - heightValueLoss
             scrollView.contentOffset.y = modifiedPotisionY
+            
+            guard let tableView = scrollView as? UITableView else { return }
+            ensureCenteredRowIsSelected(for: tableView)
         }
     }
 }

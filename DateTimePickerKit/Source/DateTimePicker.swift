@@ -304,11 +304,15 @@ import UIKit
             let rightMostXOfSeparator = separatorTopView.frame.origin.x + separatorTopView.frame.size.width
             let remainingWidthOnRightOfSeparators: CGFloat = frame.size.width - rightMostXOfSeparator
             
+            let segmentedControlWidth = remainingWidthOnRightOfSeparators / 1.25
             let segmentedControlHeight = separatorBottomView.frame.origin.y - separatorTopView.frame.origin.y
-            let segmentedControlX = rightMostXOfSeparator + (remainingWidthOnRightOfSeparators / 4)
+            
+            let segmentedControlXRelativeToSeparators = (remainingWidthOnRightOfSeparators / 2) - (segmentedControlWidth / 2)
+            let segmentedControlX = segmentedControlXRelativeToSeparators + rightMostXOfSeparator
+            
             amPMSegmentedControl = UISegmentedControl(frame: CGRect(x: segmentedControlX,
                                                                     y: separatorTopView.frame.origin.y,
-                                                                    width: remainingWidthOnRightOfSeparators / 2,
+                                                                    width: segmentedControlWidth,
                                                                     height: segmentedControlHeight))
             amPMSegmentedControl.insertSegment(withTitle: "am", at: 0, animated: false)
             amPMSegmentedControl.insertSegment(withTitle: "pm", at: 1, animated: false)

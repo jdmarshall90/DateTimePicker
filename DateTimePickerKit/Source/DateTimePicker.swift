@@ -458,6 +458,15 @@ import UIKit
             self.removeFromSuperview()
         }
     }
+    
+    internal func ensureCenteredRowIsSelected(for tableView: UITableView) -> Int {
+        let relativeOffset = CGPoint(x: 0, y: tableView.contentOffset.y + tableView.contentInset.top)
+        let rowCGFloat = round(relativeOffset.y / tableView.rowHeight)
+        let rowInt = Int(rowCGFloat)
+        tableView.selectRow(at: IndexPath(row: rowInt, section: 0), animated: true, scrollPosition: .middle)
+        return rowInt
+    }
+    
 }
 
 extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
@@ -583,12 +592,8 @@ extension DateTimePicker: UICollectionViewDataSource, UICollectionViewDelegate {
                 }
             }
         } else if let tableView = scrollView as? UITableView {
-            let relativeOffset = CGPoint(x: 0, y: tableView.contentOffset.y + tableView.contentInset.top )
-            // change row from var to let.
-            let row = round(relativeOffset.y / tableView.rowHeight)
-            tableView.selectRow(at: IndexPath(row: Int(row), section: 0), animated: true, scrollPosition: .middle)
-            
-            updateSelectedDate(for: tableView, at: Int(row))
+            let row = ensureCenteredRowIsSelected(for: tableView)
+            updateSelectedDate(for: tableView, at: row)
         }
     }
 }

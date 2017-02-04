@@ -10,6 +10,10 @@ import UIKit
 
 // FIXME: This framework's code is a mess, especially this file. My customizations to it are a mess as well (I was in a hurry and just following the pre-existing style). If I end up supporting this control in my app long-term, then this entire lib will need an overhaul so it's easier to maintain.
 
+public protocol DateTimePickerDelegate: class {
+    func dateTimePicker(picker: DateTimePicker, didChangeTo date: Date)
+}
+
 @objc open class DateTimePicker: UIView {
     
     let contentHeight: CGFloat = 310
@@ -21,6 +25,7 @@ import UIKit
     
     // public vars
     
+    public weak var delegate: DateTimePickerDelegate?
     public var timeMode: TimeMode = .twentyFourHour
     
     public var doneButtonAlpha: CGFloat = 0.5 {
@@ -67,6 +72,7 @@ import UIKit
     public var selectedDate = Date() {
         didSet {
             resetDateTitle()
+            delegate?.dateTimePicker(picker: self, didChangeTo: selectedDate)
         }
     }
     

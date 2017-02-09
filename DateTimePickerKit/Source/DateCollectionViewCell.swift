@@ -14,6 +14,18 @@ class DateCollectionViewCell: UICollectionViewCell {
     var darkColor = UIColor(red: 0, green: 22.0/255.0, blue: 39.0/255.0, alpha: 1)
     var highlightColor = UIColor(red: 0/255.0, green: 199.0/255.0, blue: 194.0/255.0, alpha: 1)
     
+    private var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter
+    }()
+    
+    private var numberFormatter: DateFormatter = {
+        let numberFormatter = DateFormatter()
+        numberFormatter.dateFormat = "d"
+        return numberFormatter
+    }()
+    
     override init(frame: CGRect) {
         
         dayLabel = UILabel(frame: CGRect(x: 5, y: 15, width: frame.width - 10, height: 20))
@@ -51,13 +63,9 @@ class DateCollectionViewCell: UICollectionViewCell {
         self.highlightColor = highlightColor
         self.darkColor = darkColor
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
         dayLabel.text = dateFormatter.string(from: date).uppercased()
         dayLabel.textColor = isSelected == true ? .white : darkColor.withAlphaComponent(0.5)
         
-        let numberFormatter = DateFormatter()
-        numberFormatter.dateFormat = "d"
         numberLabel.text = numberFormatter.string(from: date)
         numberLabel.textColor = isSelected == true ? .white : darkColor
         

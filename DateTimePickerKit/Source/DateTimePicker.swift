@@ -28,17 +28,8 @@ public protocol DateTimePickerDelegate: class {
     public weak var delegate: DateTimePickerDelegate?
     public var timeMode: TimeMode = .twentyFourHour
     
-    public var doneButtonAlpha: CGFloat = 0.5 {
-        didSet {
-            configureView()
-        }
-    }
-    
-    public var font: ((CGFloat) -> UIFont) = { UIFont.systemFont(ofSize: $0) } {
-        didSet {
-            configureView()
-        }
-    }
+    public var doneButtonAlpha: CGFloat = 0.5
+    public var font: ((CGFloat) -> UIFont) = { UIFont.systemFont(ofSize: $0) }
     
     public var backgroundViewColor: UIColor = .clear {
         didSet {
@@ -82,18 +73,8 @@ public protocol DateTimePickerDelegate: class {
         }
     }
     
-    public var todayButtonTitle = "Today" {
-        didSet {
-            todayButton.setTitle(todayButtonTitle, for: .normal)
-            let size = todayButton.sizeThatFits(CGSize(width: 0, height: 44.0)).width + 10.0
-            todayButton.frame = CGRect(x: contentView.frame.width - size, y: 0, width: size, height: 44)
-        }
-    }
-    public var doneButtonTitle = "DONE" {
-        didSet {
-            doneButton.setTitle(doneButtonTitle, for: .normal)
-        }
-    }
+    public var todayButtonTitle = "Today"
+    public var doneButtonTitle = "DONE"
     public var completionHandler: ((Date)->Void)?
     
     // private vars
@@ -127,6 +108,18 @@ public protocol DateTimePickerDelegate: class {
     internal var dates: [Date]! = []
     internal var components: DateComponents!
     
+    private var commonDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/YYYY"
+        return formatter
+    }()
+    
+    private lazy var dateTitleFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = self.dateFormat
+        return formatter
+    }()
+    
     public init(selected: Date? = nil, minimumDate: Date? = nil, maximumDate: Date? = nil) {
         super.init(frame: .zero)
         selectedDate = selected ?? Date()
@@ -148,7 +141,7 @@ public protocol DateTimePickerDelegate: class {
     open override func didMoveToSuperview() {
         self.configureView()
     }
-    
+
     private func configureView() {
         if self.contentView != nil {
             self.contentView.removeFromSuperview()
@@ -290,13 +283,10 @@ public protocol DateTimePickerDelegate: class {
         
         // fill date
         fillDates(fromDate: minimumDate, toDate: maximumDate)
-        updateCollectionView(to: selectedDate)
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/YYYY"
         for i in 0..<dates.count {
             let date = dates[i]
-            if formatter.string(from: date) == formatter.string(from: selectedDate) {
+            if date == selectedDate {
                 dayCollectionView.selectItem(at: IndexPath(row: i, section: 0), animated: true, scrollPosition: .centeredHorizontally)
                 break
             }
@@ -365,9 +355,7 @@ public protocol DateTimePickerDelegate: class {
         guard dateTitleLabel != nil else {
             return
         }
-        let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat
-        dateTitleLabel.text = formatter.string(from: selectedDate)
+        dateTitleLabel.text = dateTitleFormatter.string(from: selectedDate)
         dateTitleLabel.sizeToFit()
         dateTitleLabel.center = CGPoint(x: contentView.frame.width / 2, y: 22)
     }
@@ -410,7 +398,6 @@ public protocol DateTimePickerDelegate: class {
     }
     
     func fillDates(fromDate: Date, toDate: Date) {
-        
         var dates: [Date] = []
         var days = DateComponents()
         
@@ -436,11 +423,9 @@ public protocol DateTimePickerDelegate: class {
     }
     
     func updateCollectionView(to currentDate: Date) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/YYYY"
         for i in 0..<dates.count {
             let date = dates[i]
-            if formatter.string(from: date) == formatter.string(from: currentDate) {
+            if date == currentDate {
                 let indexPath = IndexPath(row: i, section: 0)
                 dayCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { 

@@ -286,7 +286,7 @@ public protocol DateTimePickerDelegate: class {
         
         for i in 0..<dates.count {
             let date = dates[i]
-            if date == selectedDate {
+            if commonDateFormatter.string(from: date) == commonDateFormatter.string(from: selectedDate) {
                 dayCollectionView.selectItem(at: IndexPath(row: i, section: 0), animated: true, scrollPosition: .centeredHorizontally)
                 break
             }
@@ -425,7 +425,7 @@ public protocol DateTimePickerDelegate: class {
     func updateCollectionView(to currentDate: Date) {
         for i in 0..<dates.count {
             let date = dates[i]
-            if date == currentDate {
+            if commonDateFormatter.string(from: date) == commonDateFormatter.string(from: currentDate) {
                 let indexPath = IndexPath(row: i, section: 0)
                 dayCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { 

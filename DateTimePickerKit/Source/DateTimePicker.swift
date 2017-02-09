@@ -500,7 +500,7 @@ extension DateTimePicker: UITableViewDataSource, UITableViewDelegate {
         
         // add module operation to set value same
         var hourOrMinute = indexPath.row % (tableView == hourTableView ? timeMode.rawValue : minutesInHour)
-        if timeMode == .twelveHour && hourOrMinute == 0 {
+        if tableView == hourTableView && timeMode == .twelveHour && hourOrMinute == 0 {
             hourOrMinute = timeMode.rawValue
         }
         cell.textLabel?.text = String(format: "%02i", hourOrMinute)

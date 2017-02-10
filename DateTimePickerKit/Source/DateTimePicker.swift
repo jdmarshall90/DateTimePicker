@@ -318,7 +318,7 @@ public protocol DateTimePickerDelegate: class {
             contentView.addSubview(amPMSegmentedControl)
         }
         
-        resetTime()
+        resetTime(animated: false)
         
         // animate to show contentView
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.4, options: .curveEaseIn, animations: {
@@ -334,16 +334,16 @@ public protocol DateTimePickerDelegate: class {
         resetTime()
     }
     
-    func resetTime() {
+    func resetTime(animated: Bool = true) {
         components = calendar.dateComponents([.day, .month, .year, .hour, .minute], from: selectedDate)
-        updateCollectionView(to: selectedDate)
+        updateCollectionView(to: selectedDate, animated: animated)
         if let hour = components.hour {
-            hourTableView.selectRow(at: IndexPath(row: hour + timeMode.rawValue, section: 0), animated: true, scrollPosition: .middle)
+            hourTableView.selectRow(at: IndexPath(row: hour + timeMode.rawValue, section: 0), animated: animated, scrollPosition: .middle)
         }
         
         if let minute = components.minute {
             let expectedRow = minute == 0 ? 120 : minute + minutesInHour // workaround for issue when minute = 0
-            minuteTableView.selectRow(at: IndexPath(row: expectedRow, section: 0), animated: true, scrollPosition: .middle)
+            minuteTableView.selectRow(at: IndexPath(row: expectedRow, section: 0), animated: animated, scrollPosition: .middle)
         }
         
         if timeMode == .twelveHour {
@@ -422,14 +422,14 @@ public protocol DateTimePickerDelegate: class {
         }
     }
     
-    func updateCollectionView(to currentDate: Date) {
+    func updateCollectionView(to currentDate: Date, animated: Bool) {
         for i in 0..<dates.count {
             let date = dates[i]
             if commonDateFormatter.string(from: date) == commonDateFormatter.string(from: currentDate) {
                 let indexPath = IndexPath(row: i, section: 0)
-                dayCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                dayCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: animated)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: { 
-                    self.dayCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+                    self.dayCollectionView.selectItem(at: indexPath, animated: animated, scrollPosition: .centeredHorizontally)
                 })
                 
                 break
